@@ -2,7 +2,7 @@ package net.coderbot.iris.pipeline;
 
 import java.util.List;
 import java.util.OptionalInt;
-
+import net.coderbot.iris.compat.dh.DHCompat;
 import net.coderbot.iris.gbuffer_overrides.matching.InputAvailability;
 import net.coderbot.iris.gbuffer_overrides.matching.SpecialCondition;
 import net.coderbot.iris.gbuffer_overrides.state.RenderTargetStateListener;
@@ -54,4 +54,6 @@ public interface WorldRenderingPipeline {
 	boolean allowConcurrentCompute();
 
 	float getSunPathRotation();
+	
+	DHCompat getDHCompat();
 }

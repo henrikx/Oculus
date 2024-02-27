@@ -11,7 +11,7 @@ import java.util.OptionalInt;
 import java.util.Set;
 import java.util.function.IntFunction;
 import java.util.function.Supplier;
-
+import net.coderbot.iris.compat.dh.DHCompat;
 import net.coderbot.iris.colorspace.ColorSpace;
 import net.coderbot.iris.colorspace.ColorSpaceComputeConverter;
 import net.coderbot.iris.colorspace.ColorSpaceConverter;
@@ -164,6 +164,8 @@ public class DeferredWorldRenderingPipeline implements WorldRenderingPipeline, R
 	private PackDirectives packDirectives;
 	private ColorSpace currentColorSpace;
 
+	private DHCompat dhCompat;
+
 	public DeferredWorldRenderingPipeline(ProgramSet programs) {
 		Objects.requireNonNull(programs);
 
@@ -178,6 +180,8 @@ public class DeferredWorldRenderingPipeline implements WorldRenderingPipeline, R
 		this.shouldRenderPrepareBeforeShadow = programs.getPackDirectives().isPrepareBeforeShadow();
 		this.oldLighting = programs.getPackDirectives().isOldLighting();
 		this.updateNotifier = new FrameUpdateNotifier();
+
+		this.dhCompat = new DHCompat();
 
 		this.packDirectives = programs.getPackDirectives();
 
@@ -436,6 +440,8 @@ public class DeferredWorldRenderingPipeline implements WorldRenderingPipeline, R
 			return builder.build();
 		};
 
+		dhCompat.setFramebuffer(renderTargets.createGbufferFramebuffer(ImmutableSet.of(), new int[] { 0 }));
+
 		this.sodiumTerrainPipeline = new SodiumTerrainPipeline(this, programs, createTerrainSamplers,
 			shadowRenderer == null ? null : createShadowTerrainSamplers, createTerrainImages,
 			shadowRenderer == null ? null : createShadowTerrainImages);
@@ -529,6 +535,11 @@ public class DeferredWorldRenderingPipeline implements WorldRenderingPipeline, R
 	@Override
 	public float getSunPathRotation() {
 		return sunPathRotation;
+	}
+
+	@Override
+	public DHCompat getDHCompat() {
+		return dhCompat;
 	}
 
 	private RenderCondition getCondition(WorldRenderingPhase phase) {

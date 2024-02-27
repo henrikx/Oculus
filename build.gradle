@@ -17,7 +17,8 @@ loom {
 				"mixins.oculus.optimized-stitching.json",
 				"oculus-batched-entity-rendering.mixins.json",
 				"mixins.oculus.compat.sodium.json",
-				"mixins.oculus.compat.json"
+				"mixins.oculus.compat.json",
+				"mixins.iris.compat.dh.json"
 		]
 	}
 	mixin.defaultRefmapName = "oculus-mixins-refmap.json"
@@ -58,6 +59,8 @@ dependencies {
 	modCompileOnly "curse.maven:epic-fight-mod-405076:4029362"
 
 	modRuntimeOnly "curse.maven:lazydfu-460819:3249059"
+
+	implementation "maven.modrinth:distanthorizons:2.0.1-a-1.16.5"
 
 	implementation(shadow(project(path: ":glsl-relocated", configuration: "bundledJar"))) {
 		transitive = false
